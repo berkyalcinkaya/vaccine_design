@@ -1,2 +1,2 @@
-# vaccine_design
-Wang Lab's Vaccine Design Project
+# Influenza Vaccine Design Project
+Code for Wang Lab's Vaccine Design Project
