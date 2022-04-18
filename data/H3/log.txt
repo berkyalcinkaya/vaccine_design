@@ -1,0 +1,72 @@
+H3
+
+IRDB API QUERY
+https://www.fludb.org/brc/api/sequence?datatype=protein&completeseq=y&host=human&family=influenza&toyear=2008&flutype=A&protein=HA&subtype=H3&metadata=uniprotAcc,strainName,subtype&output=fasta
+https://www.fludb.org/brc/api/sequence?datatype=protein&completeseq=y&host=human&family=influenza&fromyear=2009&flutype=A&protein=HA&subtype=H3&metadata=uniprotAcc,strainName,subtype&output=fasta
+
+3854 sequences were quiered from the IRD
+
+23 invalid sequences were found
+
+PERFORMING CD-HIT CLUSTERING
+-------------------------------------------------------
+================================================================
+Program: CD-HIT, V4.8.1, Apr 07 2021, 02:35:32
+Command: /Users/berk/venvs/vaccine/bin/cd-hit -i seqs.fasta -o
+         clustered.fasta -c 0.99
+
+Started: Mon Apr 18 12:51:28 2022
+================================================================
+                            Output                              
+----------------------------------------------------------------
+total seq: 3831
+longest and shortest : 567 and 114
+Total letters: 2167673
+Sequences have been sorted
+
+Approximated minimal memory consumption:
+Sequence        : 2M
+Buffer          : 1 X 10M = 10M
+Table           : 1 X 65M = 65M
+Miscellaneous   : 0M
+Total           : 78M
+
+Table limit with the given memory limit:
+Max number of representatives: 1081975
+Max number of word counting entries: 90151109
+
+comparing sequences from          0  to       3831
+...
+     3831  finished        243  clusters
+
+Approximated maximum memory consumption: 79M
+writing new database
+writing clustering information
+program completed !
+
+Total CPU time 0.87
+
+243 clusters were created
+
+MUSCLE ALIGNMENT
+-------------------------------------------------------
+
+muscle 5.1.osx64 [ddb630]  17.2Gb RAM, 8 cores
+Built Jan 13 2022 23:38:35
+(C) Copyright 2004-2021 Robert C. Edgar.
+https://drive5.com
+
+Input: 243 seqs, avg length 564, max 567
+
+00:00 7.0Mb  CPU has 8 cores, running 8 threads
+00:00 7.2Mb   0.0034% Calc posteriors00:01 120Mb    0.35% Calc posteriors 00:02 135Mb    0.88% Calc posteriors00:03 136Mb     1.4% Calc posteriors00:04 138Mb     2.0% Calc posteriors00:05 139Mb     2.2% Calc posteriors00:06 139Mb     2.4% Calc posteriors00:07 140Mb     2.8% Calc posteriors00:08 142Mb     3.3% Calc posteriors00:09 144Mb     3.9% Calc posteriors00:10 158Mb     4.4% Calc posteriors00:11 159Mb     4.9% Calc posteriors00:12 160Mb     5.3% Calc posteriors00:13 162Mb     5.8% Calc posteriors00:14 163Mb     6.3% Calc posteriors00:15 165Mb     6.8% Calc posteriors00:16 166Mb     7.3% Calc posteriors00:17 163Mb     7.8% Calc posteriors00:18 164Mb     8.3% Calc posteriors00:19 165Mb     8.7% Calc posteriors00:20 166Mb     9.2% Calc posteriors00:21 167Mb     9.7% Calc posteriors00:22 168Mb    10.3% Calc posteriors00:23 170Mb    10.8% Calc posteriors00:24 171Mb    11.4% Calc posteriors00:25 173Mb    11.9% Calc posteriors00:26 175Mb    12.4% Calc posteriors00:27 176Mb    13.0% Calc posteriors00:28 178Mb    13.5% Calc posteriors00:29 179Mb    14.0% Calc posteriors00:30 180Mb    14.5% Calc posteriors00:31 182Mb    14.9% Calc posteriors00:32 183Mb    15.4% Calc posteriors00:33 184Mb    15.8% Calc posteriors00:34 186Mb    16.3% Calc posteriors00:35 187Mb    16.8% Calc posteriors00:36 188Mb    17.2% Calc posteriors00:37 190Mb    17.7% Calc posteriors00:38 191Mb    18.2% Calc posteriors00:39 193Mb    18.7% Calc posteriors00:40 194Mb    19.2% Calc posteriors00:41 196Mb    19.7% Calc posteriors00:42 197Mb    20.2% Calc posteriors00:43 199Mb    20.7% Calc posteriors00:44 200Mb    21.2% Calc posteriors00:45 201Mb    21.7% Calc posteriors00:46 203Mb    22.2% Calc posteriors00:47 204Mb    22.7% Calc posteriors00:48 206Mb    23.3% Calc posteriors00:49 207Mb    23.8% Calc posteriors00:50 209Mb    24.3% Calc posteriors00:51 210Mb    24.7% Calc posteriors00:52 211Mb    25.2% Calc posteriors00:53 216Mb    25.8% Calc posteriors00:54 211Mb    26.3% Calc posteriors00:55 206Mb    26.8% Calc posteriors00:56 214Mb    27.3% Calc posteriors00:57 215Mb    27.8% Calc posteriors00:58 217Mb    28.3% Calc posteriors00:59 218Mb    28.8% Calc posteriors01:00 219Mb    29.3% Calc posteriors01:01 221Mb    29.8% Calc posteriors01:02 222Mb    30.3% Calc posteriors01:03 224Mb    30.8% Calc posteriors01:04 225Mb    31.3% Calc posteriors01:05 227Mb    31.8% Calc posteriors01:06 228Mb    32.3% Calc posteriors01:07 230Mb    32.9% Calc posteriors01:08 231Mb    33.3% Calc posteriors01:09 233Mb    33.8% Calc posteriors01:10 234Mb    34.4% Calc posteriors01:11 240Mb    34.7% Calc posteriors01:12 242Mb    35.2% Calc posteriors01:13 243Mb    35.7% Calc posteriors01:14 244Mb    36.1% Calc posteriors01:15 245Mb    36.5% Calc posteriors01:16 239Mb    37.0% Calc posteriors01:17 240Mb    37.4% Calc posteriors01:18 241Mb    37.8% Calc posteriors01:19 243Mb    38.2% Calc posteriors01:20 244Mb    38.7% Calc posteriors01:21 246Mb    39.3% Calc posteriors01:22 247Mb    39.8% Calc posteriors01:23 248Mb    40.3% Calc posteriors01:24 250Mb    40.8% Calc posteriors01:25 251Mb    41.3% Calc posteriors01:26 253Mb    41.8% Calc posteriors01:27 254Mb    42.2% Calc posteriors01:28 255Mb    42.6% Calc posteriors01:29 256Mb    43.0% Calc posteriors01:30 258Mb    43.5% Calc posteriors01:31 259Mb    44.0% Calc posteriors01:32 261Mb    44.5% Calc posteriors01:33 262Mb    45.0% Calc posteriors01:34 264Mb    45.5% Calc posteriors01:35 265Mb    46.0% Calc posteriors01:36 266Mb    46.5% Calc posteriors01:37 268Mb    47.0% Calc posteriors01:38 269Mb    47.5% Calc posteriors01:39 270Mb    47.9% Calc posteriors01:40 271Mb    48.2% Calc posteriors01:41 273Mb    48.7% Calc posteriors01:42 274Mb    49.2% Calc posteriors01:43 276Mb    49.7% Calc posteriors01:44 277Mb    50.2% Calc posteriors01:45 278Mb    50.6% Calc posteriors01:46 280Mb    51.2% Calc posteriors01:47 282Mb    51.7% Calc posteriors01:48 283Mb    52.2% Calc posteriors01:49 284Mb    52.6% Calc posteriors01:50 286Mb    53.1% Calc posteriors01:51 287Mb    53.6% Calc posteriors01:52 288Mb    54.1% Calc posteriors01:53 290Mb    54.6% Calc posteriors01:54 291Mb    55.1% Calc posteriors01:55 293Mb    55.6% Calc posteriors01:56 294Mb    56.0% Calc posteriors01:57 295Mb    56.4% Calc posteriors01:58 296Mb    56.9% Calc posteriors01:59 298Mb    57.3% Calc posteriors02:00 299Mb    57.8% Calc posteriors02:01 300Mb    58.2% Calc posteriors02:02 302Mb    58.7% Calc posteriors02:03 303Mb    59.2% Calc posteriors02:04 304Mb    59.6% Calc posteriors02:05 306Mb    60.1% Calc posteriors02:06 307Mb    60.6% Calc posteriors02:07 309Mb    61.1% Calc posteriors02:08 310Mb    61.7% Calc posteriors02:09 312Mb    62.2% Calc posteriors02:10 313Mb    62.7% Calc posteriors02:11 315Mb    63.3% Calc posteriors02:12 316Mb    63.8% Calc posteriors02:13 318Mb    64.3% Calc posteriors02:14 319Mb    64.8% Calc posteriors02:15 321Mb    65.3% Calc posteriors02:16 322Mb    65.8% Calc posteriors02:17 324Mb    66.3% Calc posteriors02:18 325Mb    66.7% Calc posteriors02:19 326Mb    67.2% Calc posteriors02:20 328Mb    67.7% Calc posteriors02:21 329Mb    68.2% Calc posteriors02:22 331Mb    68.8% Calc posteriors02:23 332Mb    69.3% Calc posteriors02:24 334Mb    69.8% Calc posteriors02:25 335Mb    70.3% Calc posteriors02:26 338Mb    70.9% Calc posteriors02:27 340Mb    71.4% Calc posteriors02:28 341Mb    71.9% Calc posteriors02:29 343Mb    72.4% Calc posteriors02:30 344Mb    72.9% Calc posteriors02:31 346Mb    73.5% Calc posteriors02:32 347Mb    74.0% Calc posteriors02:33 349Mb    74.5% Calc posteriors02:34 350Mb    75.1% Calc posteriors02:35 352Mb    75.6% Calc posteriors02:36 353Mb    76.1% Calc posteriors02:37 355Mb    76.6% Calc posteriors02:38 356Mb    77.1% Calc posteriors02:39 358Mb    77.7% Calc posteriors02:40 359Mb    78.2% Calc posteriors02:41 361Mb    78.7% Calc posteriors02:42 362Mb    79.2% Calc posteriors02:43 364Mb    79.8% Calc posteriors02:44 365Mb    80.3% Calc posteriors02:45 367Mb    80.8% Calc posteriors02:46 368Mb    81.2% Calc posteriors02:47 369Mb    81.7% Calc posteriors02:48 371Mb    82.1% Calc posteriors02:49 372Mb    82.5% Calc posteriors02:50 373Mb    83.0% Calc posteriors02:51 375Mb    83.5% Calc posteriors02:52 376Mb    83.9% Calc posteriors02:53 377Mb    84.4% Calc posteriors02:54 379Mb    84.9% Calc posteriors02:55 380Mb    85.4% Calc posteriors02:56 382Mb    85.9% Calc posteriors02:57 383Mb    86.4% Calc posteriors02:58 385Mb    86.9% Calc posteriors02:59 375Mb    87.5% Calc posteriors03:00 389Mb    88.1% Calc posteriors03:01 389Mb    88.6% Calc posteriors03:02 391Mb    89.1% Calc posteriors03:03 392Mb    89.6% Calc posteriors03:04 393Mb    90.2% Calc posteriors03:05 394Mb    90.7% Calc posteriors03:06 396Mb    91.2% Calc posteriors03:07 397Mb    91.8% Calc posteriors03:08 399Mb    92.3% Calc posteriors03:09 400Mb    92.8% Calc posteriors03:10 402Mb    93.3% Calc posteriors03:11 403Mb    93.8% Calc posteriors03:12 405Mb    94.3% Calc posteriors03:13 406Mb    94.8% Calc posteriors03:14 407Mb    95.2% Calc posteriors03:15 409Mb    95.7% Calc posteriors03:16 410Mb    96.2% Calc posteriors03:17 412Mb    96.7% Calc posteriors03:18 413Mb    97.2% Calc posteriors03:19 414Mb    97.7% Calc posteriors03:20 416Mb    98.1% Calc posteriors03:21 417Mb    98.6% Calc posteriors03:22 419Mb    99.1% Calc posteriors03:23 413Mb    99.6% Calc posteriors03:24 392Mb    99.9% Calc posteriors03:24 380Mb   100.0% Calc posteriors
+03:24 367Mb   0.0034% Consistency (1/2)03:25 388Mb     5.6% Consistency (1/2) 03:26 412Mb    13.7% Consistency (1/2)03:27 435Mb    21.8% Consistency (1/2)03:28 459Mb    30.0% Consistency (1/2)03:29 483Mb    38.1% Consistency (1/2)03:30 505Mb    45.8% Consistency (1/2)03:31 525Mb    52.8% Consistency (1/2)03:32 544Mb    59.4% Consistency (1/2)03:33 564Mb    66.3% Consistency (1/2)03:34 575Mb    72.2% Consistency (1/2)03:35 592Mb    78.4% Consistency (1/2)03:36 610Mb    84.5% Consistency (1/2)03:37 633Mb    92.5% Consistency (1/2)03:38 634Mb    99.4% Consistency (1/2)03:38 629Mb   100.0% Consistency (1/2)
+03:38 629Mb   0.0034% Consistency (2/2)03:39 629Mb     7.1% Consistency (2/2) 03:40 629Mb    15.5% Consistency (2/2)03:41 630Mb    23.9% Consistency (2/2)03:42 630Mb    32.4% Consistency (2/2)03:43 630Mb    40.8% Consistency (2/2)03:44 630Mb    49.1% Consistency (2/2)03:45 630Mb    57.3% Consistency (2/2)03:46 630Mb    65.5% Consistency (2/2)03:47 630Mb    73.7% Consistency (2/2)03:48 630Mb    82.0% Consistency (2/2)03:49 630Mb    90.3% Consistency (2/2)03:50 630Mb    97.9% Consistency (2/2)03:50 624Mb   100.0% Consistency (2/2)
+03:50 624Mb    0.41% UPGMA5           03:50 624Mb   100.0% UPGMA5
+03:50 614Mb     1.0% Refining03:51 615Mb     4.0% Refining03:52 619Mb    19.0% Refining03:53 623Mb    35.0% Refining03:54 627Mb    50.0% Refining03:55 631Mb    65.0% Refining03:56 635Mb    80.0% Refining03:57 638Mb    95.0% Refining03:57 640Mb   100.0% Refining
+
+Reading file: aln.fasta
+
+Consensus sequence: MKTIIALSYILCLVFAQKLPGNDNSTATLCLGHHAVPNGTLVKTITNDQIEVTNATELVQSSSTGRICDSPHQILDGENCTLIDALLGDPHCDGFQNKKWDLFVERSKAYSNCYPYDVPDYASLRSLVASSGTLEFNNESFNWTGVTQNGTSSACKRRSNNSFFSRLNWLTHLKYKYPALNVTMPNNEKFDKLYIWGVHHPSTDSDQISLYAQASGRVTVSTKRSQQTVIPNIGSRPWVRGISSRISIYWTIVKPGDILLINSTGNLIAPRGYFKIRSGKSSIMRSDAPIGKCNSECITPNGSIPNDKPFQNVNRITYGACPRYVKQNTLKLATGMRNVPEKQTRGIFGAIAGFIENGWEGMVDGWYGFRHQNSEGTGQAADLKSTQAAIDQINGKLNRLIEKTNEKFHQIEKEFSEVEGRIQDLEKYVEDTKIDLWSYNAELLVALENQHTIDLTDSEMNKLFERTRKQLRENAEDMGNGCFKIYHKCDNACIGSIRNGTYDHDVYRDEALNNRFQIKGVELKSGYKDWILWISFAISCFLLCVVLLGFIMWACQKGNIRCNICI
+
+Wrote summary of output to: Outputs/consensus_consensus_output.txt

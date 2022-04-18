@@ -1,0 +1,72 @@
+H7
+
+IRDB API QUERY
+https://www.fludb.org/brc/api/sequence?datatype=protein&completeseq=y&host=human&family=influenza&toyear=2008&flutype=A&protein=HA&subtype=H7&metadata=uniprotAcc,strainName,subtype&output=fasta
+https://www.fludb.org/brc/api/sequence?datatype=protein&completeseq=y&host=human&family=influenza&fromyear=2009&flutype=A&protein=HA&subtype=H7&metadata=uniprotAcc,strainName,subtype&output=fasta
+
+189 sequences were quiered from the IRD
+
+1 invalid sequences were found
+
+PERFORMING CD-HIT CLUSTERING
+-------------------------------------------------------
+================================================================
+Program: CD-HIT, V4.8.1, Apr 07 2021, 02:35:32
+Command: /Users/berk/venvs/vaccine/bin/cd-hit -i seqs.fasta -o
+         clustered.fasta -c 0.99
+
+Started: Mon Apr 18 12:55:37 2022
+================================================================
+                            Output                              
+----------------------------------------------------------------
+total seq: 188
+longest and shortest : 568 and 552
+Total letters: 105318
+Sequences have been sorted
+
+Approximated minimal memory consumption:
+Sequence        : 0M
+Buffer          : 1 X 10M = 10M
+Table           : 1 X 65M = 65M
+Miscellaneous   : 0M
+Total           : 76M
+
+Table limit with the given memory limit:
+Max number of representatives: 1095883
+Max number of word counting entries: 90488227
+
+comparing sequences from          0  to        188
+
+      188  finished         22  clusters
+
+Approximated maximum memory consumption: 76M
+writing new database
+writing clustering information
+program completed !
+
+Total CPU time 0.08
+
+22 clusters were created
+
+MUSCLE ALIGNMENT
+-------------------------------------------------------
+
+muscle 5.1.osx64 [ddb630]  17.2Gb RAM, 8 cores
+Built Jan 13 2022 23:38:35
+(C) Copyright 2004-2021 Robert C. Edgar.
+https://drive5.com
+
+Input: 22 seqs, avg length 561, max 568
+
+00:00 4.1Mb  CPU has 8 cores, running 8 threads
+00:00 4.2Mb    0.43% Calc posteriors00:01 137Mb    15.2% Calc posteriors00:02 153Mb    74.5% Calc posteriors00:02 100Mb   100.0% Calc posteriors
+00:02 88Mb     0.43% Consistency (1/2)00:02 49Mb    100.0% Consistency (1/2)
+00:02 49Mb     0.43% Consistency (2/2)00:02 49Mb    100.0% Consistency (2/2)
+00:02 49Mb      4.8% UPGMA5           00:02 49Mb    100.0% UPGMA5
+00:02 26Mb      1.0% Refining00:02 28Mb    100.0% Refining
+
+Reading file: aln.fasta
+
+Consensus sequence: MNTQILVFALIAIIPTNADKICLGHHAVSNGTKVNTLTERGVEVVNATETVERTNIPRICSKGKRTVDLGQCGLLGTITGPPQCDQFLEFSADLIIERREGSDVCYPGKFVNEEALRQILRESGGIDKEAMGFTYSGIRTNGATSACRRSGSSFYAEMKWLLSNTDNAAFPQMTKSYKNTRKSPAIIVWGIHHSVSTAEQTKLYGSGNKLVTVGSSNYQQSFVPSPGARPQVNGLSGRIDFHWLMLNPNDTVTFSFNGAFIAPDRASFLRGKSMGIQSGVQVDANCEGDCYHSGGTIISNLPFQNIDSRAVGKCPRYVKQRSLLLATGMKNVPEIPKGRGLFGAIAGFIENGWEGLIDGWYGFRHQNAQGEGTAADYKSTQSAIDQITGKLNRLIAKTNQQFELIDNEFNEVEKQIGNVINWTRDSITEVWSYNAELLVAMENQHTIDLADSEMDKLYERVKRQLRENAEEDGTGCFEIFHKCDDDCMASIRNNTYDHRKYREEAMQNRIQIDPVKLSSGYKDVILWFSFGASCFILLAIVMGLVFICVKNGNMRCTICI
+
+Wrote summary of output to: Outputs/consensus_consensus_output.txt
