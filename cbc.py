@@ -43,6 +43,8 @@ def align(consensus, sample):
                                       extendB = gap_extend_default)
     top_aln = alns[0] # choose first (best) alignment
     aln_consensus, aln_sample, _, _, _ = top_aln
+    print("consensus aln ", aln_consensus)
+    print("sample aln ", aln_sample)
     return aln_consensus, aln_sample
 
 
@@ -67,14 +69,17 @@ def color_by_conservation(s = "all", subtypes = [1], save = False, thresh = 1.25
     # name of all residues are now accessible and can be accessed by integer index
     # irregular numbering naming is handled in this way
     stored.sample_resi_list=[]
-    cmd.iterate("(name ca)","stored.list.append(resi)") # append residue number
+    cmd.iterate("(name ca)","stored.sample_resi_list.append(resi)") # append residue number
+    print(stored.sample_resi_list)
 
     # check for irregular numbering and alert user
     for resi in stored.sample_resi_list:
+        #print(resi)
         try: 
             int(resi)
         except:
             print("irregular residue numbering detected", resi)
+    
 
     # produce alignments
     consensus_aln, sample_algn = align(consensus_seq, sample_seq)
@@ -91,7 +96,7 @@ def color_by_conservation(s = "all", subtypes = [1], save = False, thresh = 1.25
         for char in sample_algn[0:ref_idx+1]:
             if char!="-":
                 idx+=1
-        pymol_resi = stored.sample_resi_list[idx] # get given residue name ffrom resi_list
+        pymol_resi = stored.sample_resi_list[idx] # get given residue name from resi_list
         return pymol_resi
 
     ref_aa_pos = 0 # because of gaps in ref seq, idx is not the same as the aa pos
