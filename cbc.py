@@ -108,6 +108,8 @@ def color_by_conservation(a, s = "all", subtypes = [1], save = False, thresh = 1
 
     # remove non amino acids
     clean_sequence(s)
+
+    print(type(subtypes))
     
     # load consensus sequence using Biopython
     consensus_seq_file = "data/" + get_consensus_file_header(subtypes)+"consensus.fasta"

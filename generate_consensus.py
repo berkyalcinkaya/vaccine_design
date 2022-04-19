@@ -153,12 +153,15 @@ def get_consensus(aln_path, consensus_path):
 def process_consensus(p, s, d):
     '''get residue frequencies specifially for consensus amino acid and save to a file'''
     seq_record = SeqIO.parse(s, "fasta")
-    sequence =  (next(seq_record)).seq.split("MSA")[0]
+    first_sequence = (next(seq_record))
+    sequence =  first_sequence.seq.split("MSA")[0]
+    #print(sequence)
+    description =  first_sequence.description
 
-    # recreate finished generator
-    seq_record = SeqIO.parse(s, "fasta")
-    seq_record.seq = sequence
-    SeqIO.write(seq_record, d, "fasta")
+    # write sequence to file
+    with open (d, "w") as f:
+        f.write(">" + str(description) + "\n")
+        f.write(str(sequence))
 
     df = pd.read_csv(p)
     frequency_dict={"pos":[],
@@ -277,10 +280,7 @@ if __name__=="__main__":
     # must pass subtypes as list
     # change this for your job
     subtypes_to_run = [
-                        ["H2"],
-                        ["H5"],
-                        ["H3"],
-                        ["H7"],
+                        ["H7"]
     ]
 
     for subtype in subtypes_to_run:
