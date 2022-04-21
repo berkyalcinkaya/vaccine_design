@@ -43,15 +43,19 @@ def export_legend(legend, filename="legend.png"):
     fig.savefig(filename, dpi="figure", bbox_inches=bbox)
 
 
-def get_consensus_file_header(subtypes:list):
+def get_consensus_file_header(subtypes: str):
     '''pattern
     -----------
-    subtypes = [HX, HY, HZ] --> file_header = HX_HY_HZ_'''
-    file_string = ""
-    for subtype in reversed(subtypes):
-        file_string+=f"H{subtype}_"
-    #file_string+= "consensus.fasta"
-    return file_string
+    subtypes = "HX, HY, HZ" --> file_header = HX_HY_HZ_'''
+    
+    if len(subtypes) == 1:
+        return subtypes+"_"
+        
+    else: 
+        subtypes = subtypes.split(",")
+        for subtype in subtypes.sort():
+            file_string+=f"H{subtype}_"
+        return file_string
 
 
 def clean_sequence(s):
@@ -84,8 +88,8 @@ def align(consensus, sample):
 
 def generate_edges(min, max, n = 8):
     bw =  (max - min)/n # bin width = bw
-    edges = np.arange(min+bw, max+bw, bw)
-    return edges
+    edges = np.linspace(min, max, n+1)
+    return edges[1:]
 
 
 def get_color_name(entropy_val, edges):
@@ -97,7 +101,28 @@ def get_color_name(entropy_val, edges):
     return f"color_{i-1}"
 
 
-def color_by_conservation(a, s = "all", subtypes = [1], save = False, thresh = 1.25):
+def color_by_conservation(a, s = "all", subtypes = "1", save = False):
+    '''HOW TO USE
+    Because of the way pymol accepts arguments, you must always pass the argument a as a dummy argument when you 
+    run the program. In other words, you must call 
+    color_by_conservation <any integer> 
+    to use this program with default arguments
+    
+    Examples:
+    H1 generation
+    --------------
+    color_by_conservation 1, subtypes = 1
+
+    H1-H3 generation
+    --------------
+    color_by_conservation 1, subtypes = 1,3
+
+    H2 generation
+    --------------
+    color_by_conservation 1, subtypes = 2
+    
+    '''
+
     # define colors in pymol
     colors = [ [1,1,1], [0.63,0.63,0.63] , [0.50,0.68,0.56] , 
           [0.26,0.77,0.44] , [0.12,0.83,0.37] , 
@@ -108,11 +133,15 @@ def color_by_conservation(a, s = "all", subtypes = [1], save = False, thresh = 1
 
     # remove non amino acids
     clean_sequence(s)
-
-    print(type(subtypes))
     
     # load consensus sequence using Biopython
-    consensus_seq_file = "data/" + get_consensus_file_header(subtypes)+"consensus.fasta"
+    # most consensus sequences can be accessed by the subtype number 
+    # ex: 1 in H1 or 1,3 in H1_H3
+    if subtypes == "human":
+        file_header = "human_"
+    else:
+        file_header = get_consensus_file_header(subtypes)
+    consensus_seq_file = "data/" + file_header + "consensus.fasta"
     consensus_record = SeqIO.parse(consensus_seq_file, "fasta")
     consensus_seq = next(consensus_record).seq
 
@@ -136,8 +165,7 @@ def color_by_conservation(a, s = "all", subtypes = [1], save = False, thresh = 1
     
     # load consensus data
     # residue frequencies is stored in H{n}_H{m}_info.csv
-    header = get_consensus_file_header(subtypes)
-    consensus_info_path =  "data/" + header + "entropy.csv"
+    consensus_info_path =  "data/" + file_header + "entropy.csv"
     entropy_data = pd.read_csv(consensus_info_path)
 
     # produces edges based on range of entropy values in entropy.csv
@@ -149,12 +177,14 @@ def color_by_conservation(a, s = "all", subtypes = [1], save = False, thresh = 1
     #print('edges\n:', edges)
     # must have same dimensions
     # colors are indentified by the upper bounding edge for entropy values
+    print(entropy_data["entropy"].min(), entropy_data["entropy"].max())
+    print(edges)
     assert len(edges) == len(colors)
 
     # produce the legend and save it
-    legend = generate_legend(edges, colors, header[0:-1]) # last character includes an underscore,
+    legend = generate_legend(edges, colors, file_header[0:-1]) # last character includes an underscore,
                                                           # which we don't want in legend title
-    legend_name = f"{header}color_legend.png"
+    legend_name = f"{file_header}color_legend.png"
     export_legend(legend, filename = legend_name)
 
 
