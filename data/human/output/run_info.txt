@@ -1,0 +1,4 @@
+all human complete human sequences starting w Met and with no ambiguous amino acids quiered from NCBI Influenza 
+Clustered at 99% using CD-Hit
+Aligned Using Muscle Super 5 algorithm
+Protein Consensus Sequence Generator with default parameters
