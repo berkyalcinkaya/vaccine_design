@@ -1,4 +1,4 @@
-Determined consensus sequence for: Inputs/H1_H3_H5_clustered_aligned.fasta
+Determined consensus sequence for: Inputs/aln.fasta
 
 Parameters used:
 Method for removing insertions: 1
@@ -8,7 +8,7 @@ MKTILAVLLYIFCLVSADTLCIGYHANNSTDTVDTILEKNVTVTHSVNLLEDSHNGKLCDLPGVAPLDLGNCTLAGWLLG
 
 MSA sequence entropy per residue: 0.818
 
-Wrote gap stripped alignment to: H1_H3_H5_clustered_aligned_gapStrip.txt
+Wrote gap stripped alignment to: aln_gapStrip.txt
 
-Wrote CSV of residue frequencies to: H1_H3_H5_clustered_aligned_residueFrequencies.csv
+Wrote CSV of residue frequencies to: aln_residueFrequencies.csv
 
