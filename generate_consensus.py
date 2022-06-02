@@ -70,7 +70,7 @@ def convert_string_to_seq(fasta_string):
 
 def clean(sequences, invalid_seq_path, cleaned_path):
     '''open output file and continously write valid sequences to output_fasta, 
-    invalid sequences are written to invalid_seq_fasta for observation purposes'''
+    invalid sequences are written to invalid_seq_path for observation purposes'''
     ambiguous_aa = ["B", "J", "O", "U", "Z"]
     
     def is_valid_sequence(seq):

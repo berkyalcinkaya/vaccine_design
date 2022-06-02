@@ -12,94 +12,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
-
-
-def generate_legend(edges, colors, legend_title):
-    legend_handles = []
-    i = 0
-    for color, entropy_val in zip(reversed(colors), edges):
-        lower_bound = 0 if i==0 else edges[i-1]
-        s = mlines.Line2D([], [], color=tuple(color), marker='s', 
-                        linestyle='None',linewidth = 20, markersize= 14, 
-                        label=f"{round(lower_bound,2)} ≤ entropy < {round(entropy_val,2)}" )
-        legend_handles.append(s)
-        i+=1
-    legend = plt.legend(handles = legend_handles, title = legend_title, 
-                        title_fontsize = 15, facecolor = "black", 
-                        labelcolor = "white", mode = "expand")
-    plt.setp(legend.get_title(), color='white')
-    
-    # show legend 
-    plt.axis("off")
-    plt.show(block = False) # allow program to proceed with block=false
-
-    return legend
-
-
-def export_legend(legend, filename="legend.png"):
-    fig  = legend.figure
-    fig.canvas.draw()
-    bbox  = legend.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
-    fig.savefig(filename, dpi="figure", bbox_inches=bbox)
-
-
-def get_consensus_file_header(subtypes: str):
-    '''pattern
-    -----------
-    subtypes = "HX, HY, HZ" --> file_header = HX_HY_HZ_'''
-    
-    if len(subtypes) == 1:
-        return subtypes+"_"
-        
-    else: 
-        subtypes = subtypes.split(",")
-        for subtype in subtypes.sort():
-            file_string+=f"H{subtype}_"
-        return file_string
-
-
-def clean_sequence(s):
-    '''removes non amino acid atoms and sets all chains to A if more than 1 chain is present'''
-    if len(cmd.get_chains(s))>1:
-        print("altering chains")
-        cmd.alter(s, "chain = 'A'")
-    selection_to_remove = s+ " and (organic or solvent)"
-    cmd.remove(selection_to_remove)
-
-
-def align(consensus, sample):
-    '''peforms a global alignment between a consensus and sample sequence
-    gap open penalty is raised very high to prevent gaps in consensus sequence'''
-    # def scoring metrics
-    gap_open_default = -10
-    gap_open_consensus = -50
-    gap_extend_default = -0.5
-    alns = pairwise2.align.globalxd(sequenceA=consensus, sequenceB=sample, 
-                                      openA = gap_open_consensus, 
-                                      extendA = gap_extend_default, 
-                                      openB = gap_open_default, 
-                                      extendB = gap_extend_default)
-    top_aln = alns[0] # choose first (best) alignment
-    aln_consensus, aln_sample, _, _, _ = top_aln
-    print("consensus aln ", aln_consensus)
-    print("sample aln ", aln_sample)
-    return aln_consensus, aln_sample
-
-
-def generate_edges(min, max, n = 8):
-    bw =  (max - min)/n # bin width = bw
-    edges = np.linspace(min, max, n+1)
-    return edges[1:]
-
-
-def get_color_name(entropy_val, edges):
-    e = edges.tolist()
-    e.reverse()
-    i = 0
-    while i<len(e) and entropy_val<=e[i]:
-        i+=1
-    return f"color_{i-1}"
-
+from pymol_utils import clean_sequence
+from utils import get_start_and_end
 
 def color_by_conservation(a, s = "all", subtypes = "1", save = False):
     '''HOW TO USE
@@ -147,7 +61,7 @@ def color_by_conservation(a, s = "all", subtypes = "1", save = False):
 
     # get loaded pymol structure's sequence
     # use Biopython and StringIO to load the string directly to a SeqIO object
-    pymol_fasta_string = cmd.get_fastastr("all")
+    pymol_fasta_string = cmd.get_fastastr(s)
     fasta_io = StringIO(pymol_fasta_string) 
     sample_record = next(SeqIO.parse(fasta_io, "fasta"))
     sample_seq = sample_record.seq
@@ -174,7 +88,7 @@ def color_by_conservation(a, s = "all", subtypes = "1", save = False):
                    entropy_data["entropy"].max(), 
                    n = len(colors)
                   )
-    #print('edges\n:', edges)
+
     # must have same dimensions
     # colors are indentified by the upper bounding edge for entropy values
     print(entropy_data["entropy"].min(), entropy_data["entropy"].max())
@@ -184,8 +98,10 @@ def color_by_conservation(a, s = "all", subtypes = "1", save = False):
     # produce the legend and save it
     legend = generate_legend(edges, colors, file_header[0:-1]) # last character includes an underscore,
                                                           # which we don't want in legend title
-    legend_name = f"{file_header}color_legend.png"
-    export_legend(legend, filename = legend_name)
+    if save:
+        legend_name = f"{file_header}color_legend.png"
+        print("\nsaving entropy legend to ",legend_name)
+        export_legend(legend, filename = legend_name)
 
 
     ## Helper Function for Mapping Consensus onto Experimental Structure
@@ -226,5 +142,164 @@ def color_by_conservation(a, s = "all", subtypes = "1", save = False):
         else:
             ref_aa_pos+=1
 
+
+
+def color_by_conservation_rbs(subtypes, s = "all", save = True):
+    '''Given an RBS predicted structure, colors residues based on entropy at that point and generates a figure
+    
+    USAGE
+    color_by_conservation_rbs'''
+    
+    colors = [ [1,1,1], [0.63,0.63,0.63] , [0.50,0.68,0.56] , 
+          [0.26,0.77,0.44] , [0.12,0.83,0.37] , 
+          [0.01,0.89,0.31] , [0,0.95,0.30], [0.,1,0.70], [0,1,1] ]
+    for i,color in enumerate(colors):
+        color_string = f"color_{i}"
+        cmd.set_color(color_string,color)
+
+    # load consensus sequence using Biopython
+    # most consensus sequences can be accessed by the subtype number 
+    # ex: 1 in H1 or 1,3 in H1_H3
+    if subtypes == "human":
+        file_header = "human_"
+    else:
+        file_header = get_consensus_file_header(subtypes)
+    consensus_seq_file = "data/" + file_header + "consensus.fasta"
+    consensus_record = SeqIO.parse(consensus_seq_file, "fasta")
+    consensus_seq = next(consensus_record).seq  
+    
+    # get loaded pymol structure's sequence
+    # use Biopython and StringIO to load the string directly to a SeqIO object
+    pymol_fasta_string = cmd.get_fastastr(s)
+    fasta_io = StringIO(pymol_fasta_string) 
+    RBS_record = next(SeqIO.parse(fasta_io, "fasta"))
+    RBS_seq = RBS_record.seq
+
+    RBS_start, RBS_end = get_start_and_end(consensus_seq, RBS_seq, verbose = False)
+
+    # populate residue list
+    # name of all residues are now accessible and can be accessed by integer index
+    # irregular numbering naming is handled in this way
+    stored.sample_resi_list=[]
+    cmd.iterate("(name ca)","stored.sample_resi_list.append(resi)") # append residue number
+    print(len(stored.sample_resi_list))
+    #print(stored.sample_resi_list)
+
+    # load consensus data
+    # residue frequencies is stored in H{n}_H{m}_info.csv
+    consensus_info_path =  "data/" + file_header + "entropy.csv"
+    entropy_data = pd.read_csv(consensus_info_path).iloc[RBS_start:RBS_end+1]
+
+      # produces edges based on range of entropy values in entropy.csv
+    # edges result in a number of bins equal to number of colors
+    edges = generate_edges(entropy_data["entropy"].min(), 
+                   entropy_data["entropy"].max(), 
+                   n = len(colors)
+                  )
+
+    # must have same dimensions
+    # colors are indentified by the upper bounding edge for entropy values
+    print(entropy_data["entropy"].min(), entropy_data["entropy"].max())
+    print(edges)
+    assert len(edges) == len(colors)
+
+    # produce the legend and save it
+    legend = generate_legend(edges, colors, file_header[0:-1]) # last character includes an underscore,
+                                                          # which we don't want in legend title
+    if save:
+        legend_name = f"{file_header}color_legend.png"
+        print("\nsaving entropy legend to ",legend_name)
+        export_legend(legend, filename = legend_name)
+
+    for idx,aa in enumerate(RBS_seq):
+        pymol_resi = stored.sample_resi_list[idx]
+        entropy = entropy_data.iloc[idx]["entropy"]
+        color_name = get_color_name(entropy, edges)
+        print("RBS pos:", idx+1, "|RBS aa:", aa, "|color:", color_name, "|entropy:", entropy)
+        selection_string = f"resi {pymol_resi}" 
+        cmd.select("selection",selection_string)
+        cmd.color(color_name, "selection")
+
+
+############### Helper functions ##################
+
+def generate_legend(edges, colors, legend_title):
+    legend_handles = []
+    i = 0
+    for color, entropy_val in zip(reversed(colors), edges):
+        lower_bound = 0 if i==0 else edges[i-1]
+        s = mlines.Line2D([], [], color=tuple(color), marker='s', 
+                        linestyle='None',linewidth = 20, markersize= 14, 
+                        label=f"{round(lower_bound,2)} ≤ entropy < {round(entropy_val,2)}" )
+        legend_handles.append(s)
+        i+=1
+    legend = plt.legend(handles = legend_handles, title = legend_title, 
+                        title_fontsize = 15, facecolor = "black", 
+                        labelcolor = "white", mode = "expand")
+    plt.setp(legend.get_title(), color='white')
+    
+    # show legend 
+    plt.axis("off")
+    plt.show(block = False) # allow program to proceed with block=false
+
+    return legend
+
+
+def export_legend(legend, filename="legend.png"):
+    fig  = legend.figure
+    fig.canvas.draw()
+    bbox  = legend.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    fig.savefig(filename, dpi="figure", bbox_inches=bbox)
+
+
+def get_consensus_file_header(subtypes: str):
+    '''pattern
+    -----------
+    subtypes = "HX, HY, HZ" --> file_header = HX_HY_HZ_'''
+    
+    if len(subtypes) == 1:
+        return subtypes+"_"
+        
+    else: 
+        subtypes = subtypes.split(",")
+        for subtype in subtypes.sort():
+            file_string+=f"H{subtype}_"
+        return file_string
+
+
+def align(consensus, sample):
+    '''peforms a global alignment between a consensus and sample sequence
+    gap open penalty is raised very high to prevent gaps in consensus sequence'''
+    # def scoring metrics
+    gap_open_default = -10
+    gap_open_consensus = -50
+    gap_extend_default = -0.5
+    alns = pairwise2.align.globalxd(sequenceA=consensus, sequenceB=sample, 
+                                      openA = gap_open_consensus, 
+                                      extendA = gap_extend_default, 
+                                      openB = gap_open_default, 
+                                      extendB = gap_extend_default)
+    top_aln = alns[0] # choose first (best) alignment
+    aln_consensus, aln_sample, _, _, _ = top_aln
+    print("consensus aln ", aln_consensus)
+    print("sample aln ", aln_sample)
+    return aln_consensus, aln_sample
+
+
+def generate_edges(min, max, n = 8):
+    bw =  (max - min)/n # bin width = bw
+    edges = np.linspace(min, max, n+1)
+    return edges[1:]
+
+
+def get_color_name(entropy_val, edges):
+    e = edges.tolist()
+    e.reverse()
+    i = 0
+    while i<len(e) and entropy_val<=e[i]:
+        i+=1
+    return f"color_{i-1}"
+
 # add this function to pymol memory
 cmd.extend("color_by_conservation", color_by_conservation)
+cmd.extend("color_by_conservation_rbs", color_by_conservation_rbs)
