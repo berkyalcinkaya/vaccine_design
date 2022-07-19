@@ -183,13 +183,18 @@ def process_consensus(p, s, d):
 
 
 
-def main(subtypes):
+def main(subtypes = None, host = "human"):
     # Step 0
     # Set up
     parent_path = os.getcwd() # returns absolute path to this directory
 
-    subtypes.sort()
-    subtype_string = get_subtype_string(subtypes) # generate an file header to identify this session
+    if subtypes:
+        print("running consensus sequence generation for ", subtypes)
+        subtypes.sort()
+        subtype_string = get_subtype_string(subtypes) # generate an file header to identify this session
+    else:
+        print("Generating consensus sequence for all subtypes under", host)
+        subtype_string = host
 
     # define file paths for outputs
     consensus_path =  os.path.join(parent_path, "protein-consensus-sequence")
@@ -213,14 +218,20 @@ def main(subtypes):
     # Step 1 
     # Get data from IRD
     # API Call using requests
-    subtype_string_api = get_subtype_string(subtypes, API = True)
+
+    if subtypes:
+        # if specific subtypes were passed we must modify the URL
+        subtype_string_api = "&subtype=" + get_subtype_string(subtypes, API = True)
+    else:
+        subtype_string_api = ""
+
 
     base_url = 'https://www.fludb.org/brc/api/sequence'
 
     # must divide search into pre 2008 and post 2008 to avoid overload
     # 10,000 sequences max can be quiered at a time
-    url1 = f"?datatype=protein&completeseq=y&host=human&family=influenza&toyear=2008&flutype=A&protein=HA&subtype={subtype_string_api}&metadata=uniprotAcc,strainName,subtype&output=fasta"
-    url2 = f"?datatype=protein&completeseq=y&host=human&family=influenza&fromyear=2009&flutype=A&protein=HA&subtype={subtype_string_api}&metadata=uniprotAcc,strainName,subtype&output=fasta"
+    url1 = f"?datatype=protein&completeseq=y&host={host}&family=influenza&toyear=2008&flutype=A&protein=HA{subtype_string_api}&metadata=uniprotAcc,strainName,subtype&output=fasta"
+    url2 = f"?datatype=protein&completeseq=y&host={host}&family=influenza&fromyear=2009&flutype=A&protein=HA{subtype_string_api}&metadata=uniprotAcc,strainName,subtype&output=fasta"
 
     # make API call
     response1 = requests.get(base_url+url1)
@@ -279,11 +290,12 @@ def main(subtypes):
 if __name__=="__main__":
     # must pass subtypes as list
     # change this for your job
-    subtypes_to_run = [
-                        ["H7"]
-    ]
+    # subtypes_to_run = [
+    #                     ["H7"]
+    # ]
 
-    for subtype in subtypes_to_run:
-        print("running consensus sequence generation for", subtype)
-        main(subtype)
+    # for subtype in subtypes_to_run:
+    #     print("running consensus sequence generation for", subtype)
+    #     main(subtype)
+    main(subtypes = None, host = "Avian")
 
